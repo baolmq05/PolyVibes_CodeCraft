@@ -66,13 +66,13 @@
   </script>
 
   <style>
-    /* Reset & Tinh chỉnh chiều cao Tom Select để khớp với form-select-sm */
-    .ts-wrapper.form-select-sm .ts-control,
-    .ts-wrapper.form-select-sm .ts-control input {
+    /* Reset & Tinh chỉnh chiều cao Tom Select */
+    .ts-wrapper .ts-control,
+    .ts-wrapper .ts-control input {
       font-size: 0.875rem !important;
     }
 
-    .ts-wrapper.form-select-sm .ts-control {
+    .ts-wrapper .ts-control {
       padding: 0 8px !important;
       height: 31px !important;
       min-height: 31px !important;
@@ -92,7 +92,7 @@
       cursor: not-allowed !important;
     }
 
-    .ts-wrapper.form-select-sm {
+    .ts-wrapper {
       padding: 0 !important;
       border: 0 !important;
       height: 31px !important;
@@ -102,9 +102,10 @@
       font-size: 0.875rem !important;
       border-radius: 0.5rem !important;
       box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.05) !important;
+      background-color: #ffffff !important;
     }
 
-    .ts-wrapper.form-select-sm .ts-control>input {
+    .ts-wrapper .ts-control>input {
       display: inline-block !important;
       height: 100% !important;
       margin: 0 !important;
