@@ -190,10 +190,10 @@ require_once __DIR__ . '/admin_layout_header.php';
 <div class="bg-surface-container-lowest border border-outline-variant rounded-xl shadow-[0_4px_6px_-1px_rgb(0,0,0,0.05)] p-lg mt-md">
   <h3 class="font-headline-sm text-headline-sm text-on-surface mb-xl">Luồng xử lý dữ liệu</h3>
   
-  <div class="relative flex flex-col md:flex-row justify-between items-stretch md:items-center w-full max-w-4xl mx-auto gap-6 md:gap-4 py-2">
+  <div class="relative flex flex-col md:flex-row justify-between items-stretch md:items-center w-full max-w-4xl mx-auto gap-6 md:gap-4 py-4">
     <!-- Connecting Line (Horizontal on Desktop) -->
-    <div class="absolute hidden md:block left-0 top-1/2 -translate-y-1/2 w-full h-1 bg-surface-container-high z-0"></div>
-    <div class="absolute hidden md:block left-0 top-1/2 -translate-y-1/2 w-[75%] h-1 bg-primary z-0 transition-all duration-500"></div>
+    <div class="absolute hidden md:block left-0 top-[36px] -translate-y-1/2 w-full h-1 bg-surface-container-high z-0"></div>
+    <div class="absolute hidden md:block left-0 top-[36px] -translate-y-1/2 w-[75%] h-1 bg-primary z-0 transition-all duration-500"></div>
     
     <!-- Connecting Line (Vertical on Mobile) -->
     <div class="absolute block md:hidden left-5 top-4 bottom-4 w-1 bg-surface-container-high z-0"></div>
