@@ -35,9 +35,11 @@ $queue = $pdo->prepare(
 $queue->execute([$maxRetry, $limit]);
 $rows = $queue->fetchAll();
 
-output("▶ Crawl detail: xử lý " . count($rows) . " URL (limit={$limit})");
+$totalRows = count($rows);
+output("▶ Crawl detail: xử lý " . $totalRows . " URL (limit={$limit})");
 
-foreach ($rows as $row) {
+foreach ($rows as $idx => $row) {
+    $currentNum = $idx + 1;
     $queueId = (int) $row['id'];
     $url     = $row['url'];
 
@@ -48,7 +50,7 @@ foreach ($rows as $row) {
          WHERE id = ?"
     )->execute([$queueId]);
 
-    output("  → {$url}");
+    output("  [{$currentNum}/{$totalRows}] → {$url}");
 
     // ── Fetch ──────────────────────────────────────────────────
     try {
@@ -148,10 +150,10 @@ foreach ($rows as $row) {
         $pdo->prepare("UPDATE crawl_queue SET trang_thai='thanh_cong', ngay_cap_nhat=NOW() WHERE id=?")
             ->execute([$queueId]);
 
-        output("    ✔ {$data['ten_cong_ty']} [{$data['mst']}]");
+        output("    ✔ [{$currentNum}/{$totalRows}] {$data['ten_cong_ty']} [{$data['mst']}]");
     } catch (PDOException $e) {
         $msg = 'DB: ' . $e->getMessage();
-        output("    ✗ {$msg}");
+        output("    ✗ [{$currentNum}/{$totalRows}] {$msg}");
         logCrawl($pdo, $url, 'that_bai', $msg);
         $pdo->prepare("UPDATE crawl_queue SET trang_thai='that_bai', ngay_cap_nhat=NOW() WHERE id=?")
             ->execute([$queueId]);
@@ -160,7 +162,8 @@ foreach ($rows as $row) {
     randomSleep();
 }
 
-output("✔ Hoàn tất crawl_detail.");
+output("<span style='color: #28a745; font-weight: bold;'>✔ Hoàn tất crawl_detail. Đã cập nhật xong {$totalRows} doanh nghiệp.</span>", true);
+output("<script>alert('Hoàn tất cào chi tiết doanh nghiệp! Đã xử lý xong {$totalRows} URL trong hàng đợi.');</script>", true);
 
 // ──────────────────────────────────────────────────────────────
 // Hàm parse trang chi tiết
@@ -255,16 +258,16 @@ function parseDetailPage(simple_html_dom $dom, string $url): array
     return $data;
 }
 
-/**
- * Tách tỉnh/thành và phường/xã từ chuỗi địa chỉ.
- * Địa chỉ thường có dạng: "Số nhà, Tên phường/xã, Quận/Huyện, Tỉnh/Thành".
- *
- * @param array<string,string> $data
- */
 function extractLocation(string $diaChi, array &$data): void
 {
     $parts = array_map('trim', explode(',', $diaChi));
     $n     = count($parts);
+
+    // Bỏ hậu tố 'Việt Nam' nếu có để lấy đúng tỉnh/thành ở vị trí cuối cùng
+    if ($n > 0 && mb_strtolower($parts[$n - 1], 'UTF-8') === 'việt nam') {
+        array_pop($parts);
+        $n = count($parts);
+    }
 
     if ($n >= 1) {
         $last = $parts[$n - 1];

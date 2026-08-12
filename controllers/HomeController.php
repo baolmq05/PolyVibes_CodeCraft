@@ -22,12 +22,14 @@ class HomeController
         $filterPhuong = (int)   ($_GET['phuong']  ?? 0);
         $filterLoai   = (int)   ($_GET['loai']    ?? 0);
         $filterNganh  = (int)   ($_GET['nganh']   ?? 0);
+        $filterSearch = trim($_GET['search']      ?? '');
         $page         = max(1,  (int) ($_GET['page'] ?? 1));
         $perPage      = 20;
 
         // ── Dropdown data ─────────────────────────────────────────────
         $tinhList   = $tinhModel->getAll();
         $phuongList = $filterTinh > 0 ? $phuongModel->getByTinhThanhId($filterTinh) : [];
+        $allPhuongList = $phuongModel->getAll();
         $loaiList   = $loaiModel->getAll();
         $nganhList  = $nganhModel->getAll();
 
@@ -37,6 +39,7 @@ class HomeController
             'phuong' => $filterPhuong,
             'loai'   => $filterLoai,
             'nganh'  => $filterNganh,
+            'search' => $filterSearch,
         ];
 
         $total      = $doanhNghiepModel->getFilteredCount($filters);
@@ -61,12 +64,13 @@ class HomeController
         $pageTitle = self::buildTitle($nganhTen, $tinhTen, $total);
 
         // Helper built inside controller scope to pass to view
-        $qs = function (array $override = []) use ($filterTinh, $filterPhuong, $filterLoai, $filterNganh): string {
+        $qs = function (array $override = []) use ($filterTinh, $filterPhuong, $filterLoai, $filterNganh, $filterSearch): string {
             $base = array_filter([
                 'tinh'   => $filterTinh,
                 'phuong' => $filterPhuong,
                 'loai'   => $filterLoai,
                 'nganh'  => $filterNganh,
+                'search' => $filterSearch,
                 'page'   => 1
             ]);
             return '?' . http_build_query(array_merge($base, $override));

@@ -3,23 +3,16 @@ declare(strict_types=1);
 
 require_once __DIR__ . '/BaseModel.php';
 
-class CrawlQueueModel extends BaseModel
+class CrawlLogModel extends BaseModel
 {
-    public function getStats(): array
-    {
-        return $this->pdo->query(
-            "SELECT trang_thai, COUNT(*) AS n FROM crawl_queue GROUP BY trang_thai"
-        )->fetchAll(PDO::FETCH_KEY_PAIR);
-    }
-
     public function getFilteredCount(array $filters): int
     {
         $where = ['1=1'];
         $params = [];
 
-        if (!empty($filters['status'])) {
-            $where[] = 'trang_thai = ?';
-            $params[] = $filters['status'];
+        if (!empty($filters['result'])) {
+            $where[] = 'ket_qua = ?';
+            $params[] = $filters['result'];
         }
         if (!empty($filters['search'])) {
             $where[] = 'url LIKE ?';
@@ -27,7 +20,7 @@ class CrawlQueueModel extends BaseModel
         }
 
         $whereSQL = implode(' AND ', $where);
-        $s = $this->pdo->prepare("SELECT COUNT(*) FROM crawl_queue WHERE {$whereSQL}");
+        $s = $this->pdo->prepare("SELECT COUNT(*) FROM crawl_log WHERE {$whereSQL}");
         $s->execute($params);
         return (int) $s->fetchColumn();
     }
@@ -37,9 +30,9 @@ class CrawlQueueModel extends BaseModel
         $where = ['1=1'];
         $params = [];
 
-        if (!empty($filters['status'])) {
-            $where[] = 'trang_thai = ?';
-            $params[] = $filters['status'];
+        if (!empty($filters['result'])) {
+            $where[] = 'ket_qua = ?';
+            $params[] = $filters['result'];
         }
         if (!empty($filters['search'])) {
             $where[] = 'url LIKE ?';
@@ -48,13 +41,12 @@ class CrawlQueueModel extends BaseModel
 
         $whereSQL = implode(' AND ', $where);
         $s = $this->pdo->prepare("
-            SELECT * FROM crawl_queue
+            SELECT * FROM crawl_log
             WHERE {$whereSQL}
-            ORDER BY id ASC
+            ORDER BY id DESC
             LIMIT ? OFFSET ?
         ");
         $s->execute(array_merge($params, [$limit, $offset]));
         return $s->fetchAll();
     }
 }
-

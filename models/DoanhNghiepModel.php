@@ -7,7 +7,7 @@ class DoanhNghiepModel extends BaseModel
 {
     public function getFilteredCount(array $filters): int
     {
-        $where = ['1=1'];
+        $where = ["d.dia_chi IS NOT NULL AND d.dia_chi != ''"];
         $params = [];
 
         if (!empty($filters['tinh'])) {
@@ -25,6 +25,12 @@ class DoanhNghiepModel extends BaseModel
         if (!empty($filters['nganh'])) {
             $where[] = 'd.nganh_nghe_id = ?';
             $params[] = (int) $filters['nganh'];
+        }
+        if (!empty($filters['search'])) {
+            $where[] = '(d.ten_cong_ty LIKE ? OR d.mst LIKE ? OR d.nguoi_dai_dien LIKE ?)';
+            $params[] = '%' . $filters['search'] . '%';
+            $params[] = '%' . $filters['search'] . '%';
+            $params[] = '%' . $filters['search'] . '%';
         }
 
         $whereSQL = implode(' AND ', $where);
@@ -35,7 +41,7 @@ class DoanhNghiepModel extends BaseModel
 
     public function getFilteredList(array $filters, int $limit, int $offset): array
     {
-        $where = ['1=1'];
+        $where = ["d.dia_chi IS NOT NULL AND d.dia_chi != ''"];
         $params = [];
 
         if (!empty($filters['tinh'])) {
@@ -53,6 +59,12 @@ class DoanhNghiepModel extends BaseModel
         if (!empty($filters['nganh'])) {
             $where[] = 'd.nganh_nghe_id = ?';
             $params[] = (int) $filters['nganh'];
+        }
+        if (!empty($filters['search'])) {
+            $where[] = '(d.ten_cong_ty LIKE ? OR d.mst LIKE ? OR d.nguoi_dai_dien LIKE ?)';
+            $params[] = '%' . $filters['search'] . '%';
+            $params[] = '%' . $filters['search'] . '%';
+            $params[] = '%' . $filters['search'] . '%';
         }
 
         $whereSQL = implode(' AND ', $where);
@@ -99,6 +111,82 @@ class DoanhNghiepModel extends BaseModel
 
     public function getTotalCount(): int
     {
-        return (int) $this->pdo->query("SELECT COUNT(*) FROM doanh_nghiep")->fetchColumn();
+        return (int) $this->pdo->query("SELECT COUNT(*) FROM doanh_nghiep WHERE dia_chi IS NOT NULL AND dia_chi != ''")->fetchColumn();
+    }
+
+    public function insert(array $data): bool
+    {
+        $sql = "INSERT INTO doanh_nghiep 
+                (mst, ten_cong_ty, ten_quoc_te, ten_viet_tat, nguoi_dai_dien, 
+                 dia_chi, dia_chi_thue, dien_thoai, tinh_trang, ngay_hoat_dong, 
+                 quan_ly_boi, loai_hinh_id, nganh_nghe_id, tinh_thanh_id, 
+                 phuong_xa_id, url_nguon, ngay_cap_nhat) 
+                VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, NOW())";
+        $s = $this->pdo->prepare($sql);
+        return $s->execute([
+            $data['mst'],
+            $data['ten_cong_ty'],
+            $data['ten_quoc_te'] ?: null,
+            $data['ten_viet_tat'] ?: null,
+            $data['nguoi_dai_dien'] ?: null,
+            $data['dia_chi'] ?: null,
+            $data['dia_chi_thue'] ?: null,
+            $data['dien_thoai'] ?: null,
+            $data['tinh_trang'] ?: null,
+            $data['ngay_hoat_dong'] ?: null,
+            $data['quan_ly_boi'] ?: null,
+            $data['loai_hinh_id'] ?: null,
+            $data['nganh_nghe_id'] ?: null,
+            $data['tinh_thanh_id'] ?: null,
+            $data['phuong_xa_id'] ?: null,
+            $data['url_nguon'] ?: null
+        ]);
+    }
+
+    public function update(string $mst, array $data): bool
+    {
+        $sql = "UPDATE doanh_nghiep SET 
+                ten_cong_ty = ?,
+                ten_quoc_te = ?,
+                ten_viet_tat = ?,
+                nguoi_dai_dien = ?,
+                dia_chi = ?,
+                dia_chi_thue = ?,
+                dien_thoai = ?,
+                tinh_trang = ?,
+                ngay_hoat_dong = ?,
+                quan_ly_boi = ?,
+                loai_hinh_id = ?,
+                nganh_nghe_id = ?,
+                tinh_thanh_id = ?,
+                phuong_xa_id = ?,
+                url_nguon = ?,
+                ngay_cap_nhat = NOW()
+                WHERE mst = ?";
+        $s = $this->pdo->prepare($sql);
+        return $s->execute([
+            $data['ten_cong_ty'],
+            $data['ten_quoc_te'] ?: null,
+            $data['ten_viet_tat'] ?: null,
+            $data['nguoi_dai_dien'] ?: null,
+            $data['dia_chi'] ?: null,
+            $data['dia_chi_thue'] ?: null,
+            $data['dien_thoai'] ?: null,
+            $data['tinh_trang'] ?: null,
+            $data['ngay_hoat_dong'] ?: null,
+            $data['quan_ly_boi'] ?: null,
+            $data['loai_hinh_id'] ?: null,
+            $data['nganh_nghe_id'] ?: null,
+            $data['tinh_thanh_id'] ?: null,
+            $data['phuong_xa_id'] ?: null,
+            $data['url_nguon'] ?: null,
+            $mst
+        ]);
+    }
+
+    public function delete(string $mst): bool
+    {
+        $s = $this->pdo->prepare("DELETE FROM doanh_nghiep WHERE mst = ?");
+        return $s->execute([$mst]);
     }
 }

@@ -168,12 +168,13 @@ function fetchHtml(string $url, int $timeout = 15): string
 /**
  * In thông báo ra web (HTML) hoặc CLI.
  */
-function output(string $msg): void
+function output(string $msg, bool $raw = false): void
 {
     if (PHP_SAPI == 'cli') {
-        echo $msg . PHP_EOL;
+        echo ($raw ? strip_tags($msg) : $msg) . PHP_EOL;
     } else {
-        echo htmlspecialchars($msg, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8') . "<br>\n";
+        $content = $raw ? $msg : htmlspecialchars($msg, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+        echo $content . "<br><script>window.scrollTo(0, document.body.scrollHeight);</script>\n";
         if (ob_get_level() > 0) {
             ob_flush();
         }
@@ -184,7 +185,7 @@ function output(string $msg): void
 /**
  * Escape output cho HTML — shorthand.
  */
-function e(string $s): string
+function e(?string $s): string
 {
-    return htmlspecialchars($s, ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
+    return htmlspecialchars($s ?? '', ENT_QUOTES | ENT_SUBSTITUTE, 'UTF-8');
 }

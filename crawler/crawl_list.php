@@ -76,7 +76,9 @@ while (true) {
     $hasNextPage = ($dom->find('a[rel=next]', 0) != null)
                 || ($dom->find('.pagination .next:not(.disabled)', 0) != null);
 
-    foreach ($blocks as $block) {
+    $totalBlocks = count($blocks);
+    foreach ($blocks as $idx => $block) {
+        $currentNum = $idx + 1;
         $path = trim($block->getAttribute('data-prefetch'));
         if ($path == '' || !str_starts_with($path, '/')) {
             continue;
@@ -88,6 +90,7 @@ while (true) {
         $stmtCheckUrl->execute([$detailUrl]);
         if ($stmtCheckUrl->fetchColumn() !== false) {
             $skipped++;
+            output("    ~ [{$currentNum}/{$totalBlocks}] Đã có trong hàng đợi: {$detailUrl}");
             continue;
         }
 
@@ -97,6 +100,7 @@ while (true) {
             $stmtCheckMst->execute([$mst]);
             if ($stmtCheckMst->fetchColumn() !== false) {
                 $skipped++;
+                output("    ~ [{$currentNum}/{$totalBlocks}] Đã lưu doanh nghiệp trước đó (MST: {$mst}): {$detailUrl}");
                 continue;
             }
         }
@@ -104,9 +108,10 @@ while (true) {
         $stmtInsert->execute([$detailUrl]);
         if ($stmtInsert->rowCount() > 0) {
             $inserted++;
-            output("    + {$detailUrl}");
+            output("    + [{$currentNum}/{$totalBlocks}] Thêm mới vào hàng đợi: {$detailUrl}");
         } else {
             $skipped++;
+            output("    ~ [{$currentNum}/{$totalBlocks}] Đã bỏ qua: {$detailUrl}");
         }
     }
 
@@ -121,4 +126,5 @@ while (true) {
     randomSleep();
 }
 
-output("✔ Hoàn tất. Đã thêm: {$inserted} | Bỏ qua: {$skipped}");
+output("<span style='color: #28a745; font-weight: bold;'>✔ Hoàn tất. Đã thêm: {$inserted} | Bỏ qua: {$skipped}</span>", true);
+output("<script>alert('Hoàn tất cào danh sách doanh nghiệp! Đã thêm {$inserted} URL mới.');</script>", true);

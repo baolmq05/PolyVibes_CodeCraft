@@ -13,4 +13,11 @@ class PhuongXaModel extends BaseModel
         $s->execute([$tinhThanhId]);
         return $s->fetchAll();
     }
+
+    public function getAll(): array
+    {
+        return $this->pdo->query(
+            "SELECT id, tinh_thanh_id, ten FROM phuong_xa ORDER BY ten ASC"
+        )->fetchAll();
+    }
 }
