@@ -179,7 +179,7 @@ $menuItems = [
   </nav>
 
   <!-- Main Content Area -->
-  <main class="flex-grow lg:pl-[280px] flex flex-col min-h-screen">
+  <main class="flex-grow lg:pl-[280px] flex flex-col min-h-screen overflow-x-hidden">
     <!-- TopNavBar -->
     <header class="sticky top-0 z-40 w-full bg-surface-bright/80 backdrop-blur-md border-b border-outline-variant/50 flex justify-between items-center px-lg h-16">
       <div class="flex items-center gap-md">
@@ -255,4 +255,4 @@ $menuItems = [
     </script>
 
     <!-- Page Canvas Content -->
-    <div class="p-gutter md:p-lg flex-1 flex flex-col gap-lg max-w-container-max mx-auto w-full">
+    <div class="p-gutter md:p-lg flex-1 flex flex-col gap-lg max-w-container-max mx-auto w-full overflow-x-hidden">
