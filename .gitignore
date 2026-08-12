@@ -1,0 +1,16 @@
+# Thông tin cá nhân / mật khẩu
+config/db.php
+
+# Uploads do người dùng tạo
+uploads/nganh-nghe/*
+!uploads/nganh-nghe/.gitkeep
+
+# IDE / OS
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+
+# Composer (nếu dùng sau này)
+vendor/
+composer.lock
