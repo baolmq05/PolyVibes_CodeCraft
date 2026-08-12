@@ -190,53 +190,53 @@ require_once __DIR__ . '/admin_layout_header.php';
 <div class="bg-surface-container-lowest border border-outline-variant rounded-xl shadow-[0_4px_6px_-1px_rgb(0,0,0,0.05)] p-lg mt-md">
   <h3 class="font-headline-sm text-headline-sm text-on-surface mb-xl">Luồng xử lý dữ liệu</h3>
   
-  <div class="relative flex flex-col md:flex-row justify-between items-stretch md:items-center w-full max-w-4xl mx-auto gap-6 md:gap-4 py-4">
+  <div class="relative flex flex-col md:flex-row justify-between items-stretch md:items-center w-full max-w-4xl mx-auto gap-6 md:gap-4 py-4 md:py-0 md:h-10 md:mb-12">
     <!-- Connecting Line (Horizontal on Desktop) -->
-    <div class="absolute hidden md:block left-0 top-[36px] -translate-y-1/2 w-full h-1 bg-surface-container-high z-0"></div>
-    <div class="absolute hidden md:block left-0 top-[36px] -translate-y-1/2 w-[75%] h-1 bg-primary z-0 transition-all duration-500"></div>
+    <div class="absolute hidden md:block left-0 top-1/2 -translate-y-1/2 w-full h-1 bg-surface-container-high z-0"></div>
+    <div class="absolute hidden md:block left-0 top-1/2 -translate-y-1/2 w-[75%] h-1 bg-primary z-0 transition-all duration-500"></div>
     
     <!-- Connecting Line (Vertical on Mobile) -->
     <div class="absolute block md:hidden left-5 top-4 bottom-4 w-1 bg-surface-container-high z-0"></div>
     <div class="absolute block md:hidden left-5 top-4 h-[72%] w-1 bg-primary z-0 transition-all duration-500"></div>
     
     <!-- Step 1 -->
-    <div class="relative z-10 flex flex-row md:flex-col items-center gap-4 md:gap-xs">
+    <div class="relative z-10 flex flex-row md:flex-col items-center gap-4 md:gap-0">
       <div class="w-10 h-10 rounded-full bg-primary text-on-primary flex items-center justify-center shadow-md flex-shrink-0">
         <span class="material-symbols-outlined" style="font-size: 20px;">check</span>
       </div>
-      <span class="font-label-sm text-label-sm text-on-surface font-semibold text-left md:text-center md:whitespace-nowrap">Thu thập URL</span>
+      <span class="font-label-sm text-label-sm text-on-surface font-semibold text-left md:text-center md:absolute md:top-12 md:left-1/2 md:-translate-x-1/2 md:w-36">Thu thập URL</span>
     </div>
     
     <!-- Step 2 -->
-    <div class="relative z-10 flex flex-row md:flex-col items-center gap-4 md:gap-xs">
+    <div class="relative z-10 flex flex-row md:flex-col items-center gap-4 md:gap-0">
       <div class="w-10 h-10 rounded-full bg-primary text-on-primary flex items-center justify-center shadow-md flex-shrink-0">
         <span class="material-symbols-outlined" style="font-size: 20px;">check</span>
       </div>
-      <span class="font-label-sm text-label-sm text-on-surface font-semibold text-left md:text-center md:whitespace-nowrap">Đưa vào hàng đợi</span>
+      <span class="font-label-sm text-label-sm text-on-surface font-semibold text-left md:text-center md:absolute md:top-12 md:left-1/2 md:-translate-x-1/2 md:w-36">Đưa vào hàng đợi</span>
     </div>
     
     <!-- Step 3 -->
-    <div class="relative z-10 flex flex-row md:flex-col items-center gap-4 md:gap-xs">
+    <div class="relative z-10 flex flex-row md:flex-col items-center gap-4 md:gap-0">
       <div class="w-10 h-10 rounded-full bg-primary text-on-primary flex items-center justify-center shadow-md flex-shrink-0">
         <span class="material-symbols-outlined" style="font-size: 20px;">check</span>
       </div>
-      <span class="font-label-sm text-label-sm text-primary font-bold text-left md:text-center md:whitespace-nowrap">Trích xuất chi tiết</span>
+      <span class="font-label-sm text-label-sm text-primary font-bold text-left md:text-center md:absolute md:top-12 md:left-1/2 md:-translate-x-1/2 md:w-36">Trích xuất chi tiết</span>
     </div>
     
     <!-- Step 4 -->
-    <div class="relative z-10 flex flex-row md:flex-col items-center gap-4 md:gap-xs">
+    <div class="relative z-10 flex flex-row md:flex-col items-center gap-4 md:gap-0">
       <div class="w-10 h-10 rounded-full bg-surface-container-lowest border-2 border-primary text-primary flex items-center justify-center shadow-md flex-shrink-0">
         <span class="material-symbols-outlined animate-spin" style="font-size: 20px;">sync</span>
       </div>
-      <span class="font-label-sm text-label-sm text-primary font-bold text-left md:text-center md:whitespace-nowrap font-semibold">Xử lý & Chuẩn hóa</span>
+      <span class="font-label-sm text-label-sm text-primary font-bold text-left md:text-center md:absolute md:top-12 md:left-1/2 md:-translate-x-1/2 md:w-36">Xử lý & Chuẩn hóa</span>
     </div>
     
     <!-- Step 5 -->
-    <div class="relative z-10 flex flex-row md:flex-col items-center gap-4 md:gap-xs opacity-50">
+    <div class="relative z-10 flex flex-row md:flex-col items-center gap-4 md:gap-0 opacity-50">
       <div class="w-10 h-10 rounded-full bg-surface-container-high text-on-surface-variant flex items-center justify-center flex-shrink-0">
         <span class="material-symbols-outlined" style="font-size: 20px;">task_alt</span>
       </div>
-      <span class="font-label-sm text-label-sm text-on-surface-variant text-left md:text-center md:whitespace-nowrap font-semibold">Lưu CSDL</span>
+      <span class="font-label-sm text-label-sm text-on-surface-variant text-left md:text-center md:absolute md:top-12 md:left-1/2 md:-translate-x-1/2 md:w-36 font-semibold">Lưu CSDL</span>
     </div>
   </div>
 </div>
