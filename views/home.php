@@ -121,9 +121,8 @@
   <!-- Header Section (Glassmorphic) -->
   <header class="sticky top-0 z-50 backdrop-blur-md bg-white/75 border-b border-slate-100 transition-all">
     <div class="max-w-[1280px] mx-auto px-4 md:px-6 h-16 flex items-center justify-between">
-      <!-- Left: Logo + Tên website -->
+      <!-- Left: Tên website -->
       <a class="flex items-center gap-2 font-bold text-lg text-primary tracking-tight" href="index.php">
-        <span class="text-xl">🏢</span>
         <span>Thông Tin Doanh Nghiệp</span>
       </a>
 
