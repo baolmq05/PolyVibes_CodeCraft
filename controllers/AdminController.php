@@ -16,6 +16,7 @@ class AdminController
 
         $statsRaw = $queueModel->getStats();
         $totalDn  = $doanhNghiepModel->getTotalCount();
+        $queueItems = $queueModel->getFilteredList([], 5, 0);
 
         $tinhOptions = [
             ''              => '-- Nhập thủ công bên dưới --',

@@ -3,111 +3,226 @@ $adminTitle = 'Quản lý Crawler';
 require_once __DIR__ . '/admin_layout_header.php';
 ?>
 
-<div class="d-flex justify-content-between align-items-center mb-4 pb-2 border-b">
-  <h2 class="h3 mb-0">Quản lý Crawler</h2>
+<!-- Header Section -->
+<div class="flex flex-col md:flex-row md:items-end justify-between gap-md mb-2">
+  <div>
+    <h2 class="font-headline-sm text-headline-sm font-semibold text-on-surface mb-xs">Quản lý Crawler</h2>
+    <p class="font-body-md text-body-md text-on-surface-variant">Điều phối quá trình thu thập dữ liệu doanh nghiệp từ nguồn.</p>
+  </div>
+  <div class="flex gap-sm">
+    <a href="logs.php" class="flex items-center gap-xs px-md py-2 border border-outline-variant rounded-lg bg-surface-container-lowest text-on-surface font-label-md text-label-md hover:bg-surface-container-low transition-colors no-underline">
+      <span class="material-symbols-outlined" style="font-size: 18px;">history</span>
+      Lịch sử cào
+    </a>
+    <a href="queue.php" class="flex items-center gap-xs px-md py-2 bg-primary text-on-primary rounded-lg font-label-md text-label-md hover:bg-primary-container transition-colors shadow-sm no-underline">
+      <span class="material-symbols-outlined" style="font-size: 18px;">list_alt</span>
+      Hàng đợi cào
+    </a>
+  </div>
 </div>
 
-<!-- Thống kê tổng quan -->
-<div class="row g-2 mb-4">
-  <?php
-  $badges = [
-    'cho' => ['warning', 'Chờ xử lý'],
-    'dang_xu_ly' => ['info', 'Đang xử lý'],
-    'thanh_cong' => ['success', 'Thành công'],
-    'that_bai' => ['danger', 'Thất bại'],
-  ];
-  foreach ($badges as $key => [$color, $label]):
-    ?>
-    <div class="col-auto">
-      <span class="badge text-bg-<?= $color ?> fs-6 px-3 py-2">
-        <?= (int) ($statsRaw[$key] ?? 0) ?>   <?= $label ?>
-      </span>
+<!-- KPI Cards Grid -->
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-md mb-6">
+  <!-- Card 1: Tổng Doanh nghiệp -->
+  <div class="bg-surface-container-lowest border border-outline-variant p-md rounded-xl shadow-[0_4px_6px_-1px_rgb(0,0,0,0.05)]">
+    <div class="flex items-center justify-between mb-sm">
+      <span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">Tổng doanh nghiệp</span>
+      <div class="p-1.5 bg-surface-container-low rounded-md">
+        <span class="material-symbols-outlined text-primary" style="font-size: 18px;">database</span>
+      </div>
     </div>
-  <?php endforeach; ?>
-  <div class="col-auto">
-    <span class="badge text-bg-dark fs-6 px-3 py-2">
-      <?= number_format($totalDn) ?> DN đã lưu
-    </span>
+    <div class="font-headline-md text-headline-md text-on-surface font-bold"><?= number_format($totalDn) ?></div>
+    <div class="mt-xs text-slate-400 font-label-sm text-label-sm">Đã lưu trong CSDL</div>
+  </div>
+  
+  <!-- Card 2: URL đang chờ -->
+  <div class="bg-surface-container-lowest border border-outline-variant p-md rounded-xl shadow-[0_4px_6px_-1px_rgb(0,0,0,0.05)]">
+    <div class="flex items-center justify-between mb-sm">
+      <span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">URL đang chờ</span>
+      <div class="p-1.5 bg-surface-container-high rounded-md">
+        <span class="material-symbols-outlined text-[#d97706]" style="font-size: 18px;">hourglass_empty</span>
+      </div>
+    </div>
+    <div class="font-headline-md text-headline-md text-[#d97706] font-bold"><?= (int) ($statsRaw['cho'] ?? 0) ?></div>
+    <div class="mt-xs text-on-surface-variant font-label-sm text-label-sm">Đang xếp hàng chờ quét</div>
+  </div>
+  
+  <!-- Card 3: URL thành công -->
+  <div class="bg-surface-container-lowest border border-outline-variant p-md rounded-xl shadow-[0_4px_6px_-1px_rgb(0,0,0,0.05)]">
+    <div class="flex items-center justify-between mb-sm">
+      <span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">URL thành công</span>
+      <div class="p-1.5 bg-surface-container-high rounded-md">
+        <span class="material-symbols-outlined text-tertiary-container" style="font-size: 18px;">check_circle</span>
+      </div>
+    </div>
+    <div class="font-headline-md text-headline-md text-tertiary-container font-bold"><?= (int) ($statsRaw['thanh_cong'] ?? 0) ?></div>
+    <div class="mt-xs text-on-surface-variant font-label-sm text-label-sm">Quét và lưu hoàn tất</div>
+  </div>
+  
+  <!-- Card 4: URL thất bại -->
+  <div class="bg-surface-container-lowest border border-outline-variant p-md rounded-xl shadow-[0_4px_6px_-1px_rgb(0,0,0,0.05)]">
+    <div class="flex items-center justify-between mb-sm">
+      <span class="font-label-sm text-label-sm text-on-surface-variant uppercase tracking-wider">URL thất bại</span>
+      <div class="p-1.5 bg-error-container rounded-md">
+        <span class="material-symbols-outlined text-on-error-container" style="font-size: 18px;">error</span>
+      </div>
+    </div>
+    <div class="font-headline-md text-headline-md text-error font-bold"><?= (int) ($statsRaw['that_bai'] ?? 0) ?></div>
+    <div class="mt-xs text-error font-label-sm text-label-sm">Cần kiểm tra/Cào lại</div>
   </div>
 </div>
 
-<!-- Bước 1: Crawl danh sách -->
-<div class="card mb-4 shadow-sm border-0">
-  <div class="card-header fw-bold bg-primary text-white border-0">Bước 1 – Crawl danh sách theo tỉnh</div>
-  <div class="card-body bg-white">
-    <form method="GET" action="run_crawl.php" target="logframe" id="formList">
-      <input type="hidden" name="action" value="list">
-      <div class="row g-3 align-items-end">
-        <div class="col-md-4">
-          <label class="form-label text-muted small fw-bold">Chọn tỉnh nhanh</label>
-          <select id="tinhSelect" class="form-select" onchange="document.getElementById('tinhInput').value=this.value">
-            <?php foreach ($tinhOptions as $v => $label): ?>
-              <option value="<?= htmlspecialchars($v) ?>"><?= htmlspecialchars($label) ?></option>
-            <?php endforeach; ?>
-          </select>
-        </div>
-        <div class="col-md-4">
-          <label class="form-label text-muted small fw-bold">
-            Slug tỉnh <small class="text-muted">(vd: can-tho-96)</small>
-          </label>
-          <input type="text" id="tinhInput" name="tinh" class="form-control" placeholder="can-tho-96"
-            pattern="[a-z0-9-]+" required>
-        </div>
-        <div class="col-md-2">
-          <label class="form-label text-muted small fw-bold">Số trang tối đa (không quá 100)</label>
-          <input type="number" name="limit" class="form-control" value="5" min="1" max="100">
-        </div>
-        <div class="col-auto">
-          <button type="submit" class="btn btn-primary">
-            ▶ Crawl danh sách
+<!-- Bento Grid: Control Center & Terminal & Queue Monitor -->
+<div class="grid grid-cols-1 lg:grid-cols-3 gap-lg mb-6">
+  <!-- Left Column: Controls (Trung tâm điều khiển) -->
+  <div class="lg:col-span-1 flex flex-col gap-lg">
+    <div class="bg-surface-container-lowest border border-outline-variant rounded-xl shadow-[0_4px_6px_-1px_rgb(0,0,0,0.05)] p-lg flex flex-col justify-between">
+      <div>
+        <h3 class="font-headline-sm text-headline-sm text-on-surface mb-md">Trung tâm điều khiển</h3>
+        
+        <!-- Form Crawl List -->
+        <form method="GET" action="run_crawl.php" target="logframe" class="space-y-4">
+          <input type="hidden" name="action" value="list">
+          <div>
+            <label class="block font-label-md text-label-md text-on-surface-variant mb-xs">Nguồn dữ liệu (Tỉnh/Thành)</label>
+            <select name="tinh" class="w-full bg-surface-container-lowest border border-outline-variant rounded-lg px-sm py-2 font-body-md text-body-md focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none">
+              <?php foreach ($tinhOptions as $v => $label): if ($v === '') continue; ?>
+                <option value="<?= htmlspecialchars($v) ?>"><?= htmlspecialchars($label) ?></option>
+              <?php endforeach; ?>
+            </select>
+          </div>
+          <div>
+            <label class="block font-label-md text-label-md text-on-surface-variant mb-xs">Số trang quét danh sách (tối đa 100)</label>
+            <input name="limit" class="w-full bg-surface-container-lowest border border-outline-variant rounded-lg px-sm py-2 font-body-md text-body-md focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none" type="number" value="5" min="1" max="100"/>
+          </div>
+          <button type="submit" class="w-full flex items-center justify-center gap-xs py-2.5 bg-primary hover:bg-primary-container text-on-primary rounded-lg font-label-md text-label-md transition-colors shadow-sm">
+            <span class="material-symbols-outlined" style="font-size: 18px;">list_alt</span>
+            Crawl danh sách
           </button>
-        </div>
-      </div>
-      <div class="form-text mt-2 small text-muted">
-        Slug = phần sau <code>/tra-cuu-ma-so-thue-theo-tinh/</code> trên masothue.com
-      </div>
-    </form>
-  </div>
-</div>
+        </form>
 
-<!-- Bước 2: Crawl chi tiết -->
-<div class="card mb-4 shadow-sm border-0">
-  <div class="card-header fw-bold bg-success text-white border-0">Bước 2 – Crawl chi tiết từ queue</div>
-  <div class="card-body bg-white">
-    <form method="GET" action="run_crawl.php" target="logframe">
-      <input type="hidden" name="action" value="detail">
-      <div class="row g-3 align-items-end">
-        <div class="col-md-3">
-          <label class="form-label text-muted small fw-bold">Số bản ghi / lần (không quá 100)</label>
-          <input type="number" name="limit" class="form-control" value="20" min="1" max="100">
-        </div>
-        <div class="col-auto">
-          <button type="submit" class="btn btn-success">
-            ▶ Crawl chi tiết
+        <div class="border-t border-outline-variant/30 my-4"></div>
+
+        <!-- Form Crawl Detail -->
+        <form method="GET" action="run_crawl.php" target="logframe" class="space-y-4">
+          <input type="hidden" name="action" value="detail">
+          <div>
+            <label class="block font-label-md text-label-md text-on-surface-variant mb-xs">Số bản ghi quét chi tiết / lần</label>
+            <input name="limit" class="w-full bg-surface-container-lowest border border-outline-variant rounded-lg px-sm py-2 font-body-md text-body-md focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none" type="number" value="20" min="1" max="100"/>
+          </div>
+          <button type="submit" class="w-full flex items-center justify-center gap-xs py-2.5 bg-[#006e4b] hover:bg-emerald-700 text-white rounded-lg font-label-md text-label-md transition-colors shadow-sm">
+            <span class="material-symbols-outlined" style="font-size: 18px;">view_headline</span>
+            Crawl chi tiết từ hàng đợi
           </button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Right Column: Terminal & Queue Monitor -->
+  <div class="lg:col-span-2 flex flex-col gap-lg">
+    <!-- Terminal Panel -->
+    <div class="bg-[#0F172A] border border-outline/20 rounded-xl shadow-[0_4px_6px_-1px_rgb(0,0,0,0.05)] overflow-hidden flex flex-col h-[300px]">
+      <div class="flex items-center justify-between px-md py-2 bg-[#1E293B] border-b border-outline/10">
+        <div class="flex items-center gap-2">
+          <span class="material-symbols-outlined text-tertiary-fixed-dim" style="font-size: 16px;">terminal</span>
+          <span class="font-mono text-xs text-outline-variant">crawl-stream.log</span>
+        </div>
+        <button class="text-xs text-outline-variant hover:text-white px-2.5 py-0.5 rounded border border-outline/20 bg-slate-800 hover:bg-slate-700 transition"
+                onclick="document.querySelector('iframe[name=logframe]').src='about:blank'">
+          Xoá log
+        </button>
+      </div>
+      <div class="flex-grow bg-[#0F172A]">
+        <iframe name="logframe" src="about:blank"
+                style="width:100%;height:100%;border:0;background:#0F172A;color:#94A3B8;font-family:'JetBrains Mono', monospace;"
+                class="bg-[#0F172A] rounded-bottom"></iframe>
+      </div>
+    </div>
+
+    <!-- Queue Monitor -->
+    <div class="bg-surface-container-lowest border border-outline-variant rounded-xl shadow-[0_4px_6px_-1px_rgb(0,0,0,0.05)] flex-1 p-lg overflow-hidden flex flex-col justify-between">
+      <div>
+        <div class="flex items-center justify-between mb-md">
+          <h3 class="font-headline-sm text-headline-sm text-on-surface">Theo dõi hàng đợi</h3>
+          <a href="queue.php" class="text-primary font-label-sm text-label-sm hover:underline no-underline">Xem tất cả</a>
+        </div>
+        <div class="overflow-y-auto space-y-2 max-h-[170px] pr-1">
+          <?php if (empty($queueItems)): ?>
+            <div class="text-center text-xs text-slate-400 py-6">Hàng đợi hiện tại đang trống.</div>
+          <?php else: foreach ($queueItems as $qi): ?>
+            <div class="flex items-center justify-between p-sm border border-outline-variant/40 rounded-lg hover:bg-surface-container-low transition-colors">
+              <div class="flex items-center gap-sm">
+                <span class="material-symbols-outlined text-outline-variant" style="font-size: 18px;">link</span>
+                <span class="font-mono text-xs text-on-surface-variant truncate max-w-[200px] md:max-w-[400px]" title="<?= e($qi['url']) ?>">
+                  <?= e($qi['url']) ?>
+                </span>
+              </div>
+              <?php
+              $status = $qi['trang_thai'];
+              if ($status === 'thanh_cong'): ?>
+                <span class="px-2.5 py-0.5 bg-emerald-50 text-emerald-700 font-semibold text-[10px] rounded-full border border-emerald-200">Thành công</span>
+              <?php elseif ($status === 'dang_xu_ly'): ?>
+                <span class="px-2.5 py-0.5 bg-[#fef3c7] text-[#92400e] font-semibold text-[10px] rounded-full border border-amber-200 flex items-center gap-1">
+                  <span class="material-symbols-outlined animate-spin" style="font-size: 10px;">sync</span> Đang xử lý
+                </span>
+              <?php elseif ($status === 'cho'): ?>
+                <span class="px-2.5 py-0.5 bg-slate-100 text-slate-600 font-semibold text-[10px] rounded-full border border-slate-200">Chờ</span>
+              <?php else: ?>
+                <span class="px-2.5 py-0.5 bg-red-50 text-red-700 font-semibold text-[10px] rounded-full border border-red-200">Thất bại</span>
+              <?php endif; ?>
+            </div>
+          <?php endforeach; endif; ?>
         </div>
       </div>
-      <div class="form-text mt-2 small text-muted">
-        Chỉ xử lý các URL trạng thái <em>chờ</em> hoặc <em>thất bại &lt;
-          <?= defined('CRAWL_MAX_RETRY') ? CRAWL_MAX_RETRY : 3 ?> lần</em>.
-      </div>
-    </form>
+    </div>
   </div>
 </div>
 
-<!-- Iframe log output (Terminal Logs) -->
-<div class="card shadow-sm border-0">
-  <div class="card-header fw-bold bg-dark text-white border-0 d-flex justify-content-between align-items-center">
-    <span>Crawl Logs Terminal</span>
-    <button class="btn btn-sm btn-outline-light py-0 px-2"
-      onclick="document.querySelector('iframe[name=logframe]').src='about:blank'">
-      Xoá log
-    </button>
-  </div>
-  <div class="card-body p-0">
-    <iframe name="logframe" src="about:blank"
-      style="width:100%;height:400px;border:0;background:#212529;color:#f8f9fa;font-family:monospace;"
-      class="rounded-bottom"></iframe>
+<!-- Workflow Stepper -->
+<div class="bg-surface-container-lowest border border-outline-variant rounded-xl shadow-[0_4px_6px_-1px_rgb(0,0,0,0.05)] p-lg mt-md">
+  <h3 class="font-headline-sm text-headline-sm text-on-surface mb-xl">Luồng xử lý dữ liệu</h3>
+  <div class="relative flex justify-between items-center w-full max-w-4xl mx-auto py-4">
+    <!-- Connecting Line -->
+    <div class="absolute left-0 top-1/2 -translate-y-1/2 w-full h-1 bg-surface-container-high z-0"></div>
+    <!-- Active Line -->
+    <div class="absolute left-0 top-1/2 -translate-y-1/2 w-[75%] h-1 bg-primary z-0 transition-all duration-500"></div>
+    
+    <!-- Step 1 -->
+    <div class="relative z-10 flex flex-col items-center gap-xs">
+      <div class="w-10 h-10 rounded-full bg-primary text-on-primary flex items-center justify-center shadow-md">
+        <span class="material-symbols-outlined" style="font-size: 20px;">check</span>
+      </div>
+      <span class="font-label-sm text-label-sm text-on-surface font-semibold text-center whitespace-nowrap">Thu thập URL</span>
+    </div>
+    <!-- Step 2 -->
+    <div class="relative z-10 flex flex-col items-center gap-xs">
+      <div class="w-10 h-10 rounded-full bg-primary text-on-primary flex items-center justify-center shadow-md">
+        <span class="material-symbols-outlined" style="font-size: 20px;">check</span>
+      </div>
+      <span class="font-label-sm text-label-sm text-on-surface font-semibold text-center whitespace-nowrap">Đưa vào hàng đợi</span>
+    </div>
+    <!-- Step 3 -->
+    <div class="relative z-10 flex flex-col items-center gap-xs">
+      <div class="w-10 h-10 rounded-full bg-primary text-on-primary flex items-center justify-center shadow-md">
+        <span class="material-symbols-outlined" style="font-size: 20px;">check</span>
+      </div>
+      <span class="font-label-sm text-label-sm text-primary font-bold text-center whitespace-nowrap">Trích xuất chi tiết</span>
+    </div>
+    <!-- Step 4 -->
+    <div class="relative z-10 flex flex-col items-center gap-xs">
+      <div class="w-10 h-10 rounded-full bg-surface-container-lowest border-2 border-primary text-primary flex items-center justify-center shadow-md">
+        <span class="material-symbols-outlined animate-spin" style="font-size: 20px;">sync</span>
+      </div>
+      <span class="font-label-sm text-label-sm text-primary font-bold text-center whitespace-nowrap font-semibold">Xử lý & Chuẩn hóa</span>
+    </div>
+    <!-- Step 5 -->
+    <div class="relative z-10 flex flex-col items-center gap-xs opacity-50">
+      <div class="w-10 h-10 rounded-full bg-surface-container-high text-on-surface-variant flex items-center justify-center">
+        <span class="material-symbols-outlined" style="font-size: 20px;">task_alt</span>
+      </div>
+      <span class="font-label-sm text-label-sm text-on-surface-variant text-center whitespace-nowrap font-semibold">Lưu CSDL</span>
+    </div>
   </div>
 </div>
 
