@@ -194,8 +194,8 @@ $menuItems = [
       </div>
       
       <div class="flex items-center gap-sm">
-        <a href="../index.php" target="_blank" class="p-2 text-on-surface-variant hover:bg-surface-container-low rounded-full transition-all duration-200" title="Xem trang chủ">
-          <span class="material-symbols-outlined">open_in_new</span>
+        <a href="../index.php" class="p-2 text-on-surface-variant hover:bg-surface-container-low rounded-full transition-all duration-200" title="Xem trang chủ">
+          <span class="material-symbols-outlined">home</span>
         </a>
         <div class="h-8 w-px bg-outline-variant/50 mx-xs"></div>
         <div class="w-8 h-8 rounded-full bg-primary/30 flex items-center justify-center border border-outline-variant text-primary font-bold text-xs select-none">
@@ -238,6 +238,18 @@ $menuItems = [
             <span class="font-label-md text-label-md"><?= $item['label'] ?></span>
           </a>
         <?php endif; endforeach; ?>
+      </div>
+
+      <!-- Footer Mobile -->
+      <div class="mt-auto px-md py-lg border-t border-outline/20 flex flex-col gap-1">
+        <a class="flex items-center gap-3 text-outline-variant hover:text-white px-4 py-3 hover:bg-white/5 transition-all cursor-pointer select-none no-underline" href="../index.php">
+          <span class="material-symbols-outlined">home</span>
+          <span class="font-label-md text-label-md">Xem trang chủ</span>
+        </a>
+        <a class="flex items-center gap-3 text-outline-variant hover:text-white px-4 py-3 hover:bg-white/5 transition-all cursor-pointer select-none no-underline" href="../index.php">
+          <span class="material-symbols-outlined">logout</span>
+          <span class="font-label-md text-label-md">Thoát Admin</span>
+        </a>
       </div>
     </div>
 
