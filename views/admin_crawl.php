@@ -85,7 +85,7 @@ require_once __DIR__ . '/admin_layout_header.php';
           <input type="hidden" name="action" value="list">
           <div>
             <label class="block font-label-md text-label-md text-on-surface-variant mb-xs">Nguồn dữ liệu (Tỉnh/Thành)</label>
-            <select name="tinh" class="w-full bg-surface-container-lowest border border-outline-variant rounded-lg px-sm py-2 font-body-md text-body-md focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none">
+            <select name="tinh" class="w-full h-10 bg-surface-container-lowest border border-outline-variant rounded-lg px-sm font-body-md text-body-md focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none">
               <?php foreach ($tinhOptions as $v => $label): if ($v === '') continue; ?>
                 <option value="<?= htmlspecialchars($v) ?>"><?= htmlspecialchars($label) ?></option>
               <?php endforeach; ?>
@@ -93,9 +93,9 @@ require_once __DIR__ . '/admin_layout_header.php';
           </div>
           <div>
             <label class="block font-label-md text-label-md text-on-surface-variant mb-xs">Số trang quét danh sách (tối đa 100)</label>
-            <input name="limit" class="w-full bg-surface-container-lowest border border-outline-variant rounded-lg px-sm py-2 font-body-md text-body-md focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none" type="number" value="5" min="1" max="100"/>
+            <input name="limit" class="w-full h-10 bg-surface-container-lowest border border-outline-variant rounded-lg px-sm font-body-md text-body-md focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none" type="number" value="5" min="1" max="100"/>
           </div>
-          <button type="submit" class="w-full flex items-center justify-center gap-xs py-2.5 bg-primary hover:bg-primary-container text-on-primary rounded-lg font-label-md text-label-md transition-colors shadow-sm">
+          <button type="submit" class="w-full h-10 flex items-center justify-center gap-xs bg-primary hover:bg-primary-container text-on-primary rounded-lg font-label-md text-label-md transition-colors shadow-sm">
             <span class="material-symbols-outlined" style="font-size: 18px;">list_alt</span>
             Crawl danh sách
           </button>
@@ -108,9 +108,9 @@ require_once __DIR__ . '/admin_layout_header.php';
           <input type="hidden" name="action" value="detail">
           <div>
             <label class="block font-label-md text-label-md text-on-surface-variant mb-xs">Số bản ghi quét chi tiết / lần</label>
-            <input name="limit" class="w-full bg-surface-container-lowest border border-outline-variant rounded-lg px-sm py-2 font-body-md text-body-md focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none" type="number" value="20" min="1" max="100"/>
+            <input name="limit" class="w-full h-10 bg-surface-container-lowest border border-outline-variant rounded-lg px-sm font-body-md text-body-md focus:border-primary focus:ring-1 focus:ring-primary focus:outline-none" type="number" value="20" min="1" max="100"/>
           </div>
-          <button type="submit" class="w-full flex items-center justify-center gap-xs py-2.5 bg-[#006e4b] hover:bg-emerald-700 text-white rounded-lg font-label-md text-label-md transition-colors shadow-sm">
+          <button type="submit" class="w-full h-10 flex items-center justify-center gap-xs bg-[#006e4b] hover:bg-emerald-700 text-white rounded-lg font-label-md text-label-md transition-colors shadow-sm">
             <span class="material-symbols-outlined" style="font-size: 18px;">view_headline</span>
             Crawl chi tiết từ hàng đợi
           </button>
