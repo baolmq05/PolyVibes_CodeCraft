@@ -84,6 +84,11 @@ while (true) {
             continue;
         }
 
+        // Chỉ chấp nhận đường dẫn có định dạng của doanh nghiệp chi tiết: /{mst}-{slug}
+        if (!preg_match('#^/([0-9]+(?:-[0-9]+)*)-#', $path, $m)) {
+            continue;
+        }
+
         $detailUrl = 'https://masothue.com' . $path;
 
         // Kiểm tra URL đã có trong queue chưa

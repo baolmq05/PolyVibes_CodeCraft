@@ -24,6 +24,9 @@ $maxRetry = defined('CRAWL_MAX_RETRY') ? CRAWL_MAX_RETRY : 3;
 $timeout  = defined('CRAWL_TIMEOUT')   ? CRAWL_TIMEOUT   : 15;
 $pdo      = getPDO();
 
+// Tự động dọn dẹp các URL rác (link danh sách/tỉnh/phường xã...) lọt vào queue
+$pdo->query("DELETE FROM crawl_queue WHERE url LIKE '%/tra-cuu-ma-so-thue-theo-tinh/%'");
+
 // ── Lấy hàng đợi ──────────────────────────────────────────────
 $queue = $pdo->prepare(
     "SELECT id, url FROM crawl_queue
