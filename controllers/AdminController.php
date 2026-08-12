@@ -15,26 +15,25 @@ class AdminController
         $doanhNghiepModel = new DoanhNghiepModel();
 
         $statsRaw = $queueModel->getStats();
-        $totalDn  = $doanhNghiepModel->getTotalCount();
+        $totalDn = $doanhNghiepModel->getTotalCount();
         $queueItems = $queueModel->getFilteredList([], 5, 0);
 
         $tinhOptions = [
-            ''              => '-- Nhập thủ công bên dưới --',
-            'can-tho-96'    => 'Cần Thơ',
-            'long-an-29'    => 'Long An',
-            'tien-giang-177'=> 'Tiền Giang',
-            'ben-tre-185'   => 'Bến Tre',
-            'tra-vinh-41'   => 'Trà Vinh',
+            '' => '-- Nhập thủ công bên dưới --',
+            'can-tho-96' => 'Cần Thơ',
+            'long-an-29' => 'Long An',
+            'tien-giang-177' => 'Tiền Giang',
+            'ben-tre-185' => 'Bến Tre',
+            'tra-vinh-41' => 'Trà Vinh',
             'vinh-long-193' => 'Vĩnh Long',
-            'dong-thap-63'  => 'Đồng Tháp',
-            'an-giang-93'   => 'An Giang',
+            'dong-thap-63' => 'Đồng Tháp',
+            'an-giang-93' => 'An Giang',
             'kien-giang-80' => 'Kiên Giang',
             'hau-giang-190' => 'Hậu Giang',
             'soc-trang-949' => 'Sóc Trăng',
-            'bac-lieu-197'  => 'Bạc Liêu',
-            'ca-mau-108'    => 'Cà Mau',
-            'ho-chi-minh'   => 'TP. Hồ Chí Minh',
-            'ha-noi'        => 'Hà Nội',
+            'bac-lieu-197' => 'Bạc Liêu',
+            'ca-mau-108' => 'Cà Mau',
+            'ho-chi-minh' => 'TP. Hồ Chí Minh',
         ];
 
         require_once __DIR__ . '/../views/admin_crawl.php';
@@ -43,7 +42,7 @@ class AdminController
     public static function danhMuc(): void
     {
         $nganhModel = new NganhNgheModel();
-        $msg        = '';
+        $msg = '';
 
         // ── Xử lý POST (Xoá) ──────────────────────────────────────────
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
@@ -62,8 +61,8 @@ class AdminController
         // Hiện thông báo sau redirect
         if (!empty($_GET['msg'])) {
             $allowedTypes = ['success', 'warning', 'danger', 'info'];
-            $type  = in_array($_GET['type'] ?? '', $allowedTypes, true) ? $_GET['type'] : 'info';
-            $msg   = '<div class="alert alert-' . $type . '">' . e($_GET['msg']) . '</div>';
+            $type = in_array($_GET['type'] ?? '', $allowedTypes, true) ? $_GET['type'] : 'info';
+            $msg = '<div class="alert alert-' . $type . '">' . e($_GET['msg']) . '</div>';
         }
 
         $nganhs = $nganhModel->getAllWithCount();
@@ -73,10 +72,10 @@ class AdminController
     public static function danhMucEdit(): void
     {
         $nganhModel = new NganhNgheModel();
-        $uploadDir  = __DIR__ . '/../uploads/nganh-nghe/';
-        $uploadUrl  = '../uploads/nganh-nghe/';
-        $msg        = '';
-        $id         = (int) ($_GET['id'] ?? 0);
+        $uploadDir = __DIR__ . '/../uploads/nganh-nghe/';
+        $uploadUrl = '../uploads/nganh-nghe/';
+        $msg = '';
+        $id = (int) ($_GET['id'] ?? 0);
 
         $editing = null;
         if ($id > 0) {
@@ -87,8 +86,8 @@ class AdminController
         if ($_SERVER['REQUEST_METHOD'] === 'POST') {
             $action = $_POST['action'] ?? '';
             if ($action == 'save') {
-                $ten  = trim($_POST['ten']   ?? '');
-                $slug = trim($_POST['slug']  ?? '') ?: slugify($ten);
+                $ten = trim($_POST['ten'] ?? '');
+                $slug = trim($_POST['slug'] ?? '') ?: slugify($ten);
                 $moTa = trim($_POST['mo_ta'] ?? '');
 
                 if ($ten == '') {
@@ -131,7 +130,7 @@ class AdminController
     private static function processUpload(array $file, string $dir): ?string
     {
         $allowedMime = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
-        $allowedExt  = ['jpg', 'jpeg', 'png', 'webp', 'gif'];
+        $allowedExt = ['jpg', 'jpeg', 'png', 'webp', 'gif'];
 
         if (!in_array($file['type'], $allowedMime, true)) {
             return null;
@@ -173,24 +172,24 @@ class AdminController
 
         $filterStatus = $_GET['status'] ?? '';
         $filterSearch = trim($_GET['search'] ?? '');
-        $page         = max(1, (int) ($_GET['page'] ?? 1));
-        $perPage      = 20;
+        $page = max(1, (int) ($_GET['page'] ?? 1));
+        $perPage = 20;
 
         $filters = [
             'status' => $filterStatus,
             'search' => $filterSearch,
         ];
 
-        $total      = $queueModel->getFilteredCount($filters);
+        $total = $queueModel->getFilteredCount($filters);
         $totalPages = (int) ceil($total / $perPage);
-        $offset     = ($page - 1) * $perPage;
-        $rows       = $queueModel->getFilteredList($filters, $perPage, $offset);
+        $offset = ($page - 1) * $perPage;
+        $rows = $queueModel->getFilteredList($filters, $perPage, $offset);
 
         $qs = function (array $override = []) use ($filterStatus, $filterSearch): string {
             $base = array_filter([
                 'status' => $filterStatus,
                 'search' => $filterSearch,
-                'page'   => 1
+                'page' => 1
             ]);
             return '?' . http_build_query(array_merge($base, $override));
         };
@@ -204,24 +203,24 @@ class AdminController
 
         $filterResult = $_GET['result'] ?? '';
         $filterSearch = trim($_GET['search'] ?? '');
-        $page         = max(1, (int) ($_GET['page'] ?? 1));
-        $perPage      = 20;
+        $page = max(1, (int) ($_GET['page'] ?? 1));
+        $perPage = 20;
 
         $filters = [
             'result' => $filterResult,
             'search' => $filterSearch,
         ];
 
-        $total      = $logModel->getFilteredCount($filters);
+        $total = $logModel->getFilteredCount($filters);
         $totalPages = (int) ceil($total / $perPage);
-        $offset     = ($page - 1) * $perPage;
-        $rows       = $logModel->getFilteredList($filters, $perPage, $offset);
+        $offset = ($page - 1) * $perPage;
+        $rows = $logModel->getFilteredList($filters, $perPage, $offset);
 
         $qs = function (array $override = []) use ($filterResult, $filterSearch): string {
             $base = array_filter([
                 'result' => $filterResult,
                 'search' => $filterSearch,
-                'page'   => 1
+                'page' => 1
             ]);
             return '?' . http_build_query(array_merge($base, $override));
         };
@@ -236,10 +235,10 @@ class AdminController
         require_once __DIR__ . '/../models/LoaiHinhModel.php';
         require_once __DIR__ . '/../models/NganhNgheModel.php';
 
-        $tinhModel       = new TinhThanhModel();
-        $phuongModel     = new PhuongXaModel();
-        $loaiModel       = new LoaiHinhModel();
-        $nganhModel      = new NganhNgheModel();
+        $tinhModel = new TinhThanhModel();
+        $phuongModel = new PhuongXaModel();
+        $loaiModel = new LoaiHinhModel();
+        $nganhModel = new NganhNgheModel();
         $doanhNghiepModel = new DoanhNghiepModel();
 
         // ── Xử lý POST (Xóa doanh nghiệp) ─────────────────────────────
@@ -259,45 +258,45 @@ class AdminController
         $msg = '';
         if (!empty($_GET['msg'])) {
             $allowedTypes = ['success', 'warning', 'danger', 'info'];
-            $type  = in_array($_GET['type'] ?? '', $allowedTypes, true) ? $_GET['type'] : 'info';
-            $msg   = '<div class="alert alert-' . $type . '">' . e($_GET['msg']) . '</div>';
+            $type = in_array($_GET['type'] ?? '', $allowedTypes, true) ? $_GET['type'] : 'info';
+            $msg = '<div class="alert alert-' . $type . '">' . e($_GET['msg']) . '</div>';
         }
 
-        $filterTinh   = (int)   ($_GET['tinh']    ?? 0);
-        $filterPhuong = (int)   ($_GET['phuong']  ?? 0);
-        $filterLoai   = (int)   ($_GET['loai']    ?? 0);
-        $filterNganh  = (int)   ($_GET['nganh']   ?? 0);
-        $filterSearch = trim($_GET['search']      ?? '');
-        $page         = max(1,  (int) ($_GET['page'] ?? 1));
-        $perPage      = 20;
+        $filterTinh = (int) ($_GET['tinh'] ?? 0);
+        $filterPhuong = (int) ($_GET['phuong'] ?? 0);
+        $filterLoai = (int) ($_GET['loai'] ?? 0);
+        $filterNganh = (int) ($_GET['nganh'] ?? 0);
+        $filterSearch = trim($_GET['search'] ?? '');
+        $page = max(1, (int) ($_GET['page'] ?? 1));
+        $perPage = 20;
 
-        $tinhList   = $tinhModel->getAll();
+        $tinhList = $tinhModel->getAll();
         $phuongList = $filterTinh > 0 ? $phuongModel->getByTinhThanhId($filterTinh) : [];
         $allPhuongList = $phuongModel->getAll();
-        $loaiList   = $loaiModel->getAll();
-        $nganhList  = $nganhModel->getAll();
+        $loaiList = $loaiModel->getAll();
+        $nganhList = $nganhModel->getAll();
 
         $filters = [
-            'tinh'   => $filterTinh,
+            'tinh' => $filterTinh,
             'phuong' => $filterPhuong,
-            'loai'   => $filterLoai,
-            'nganh'  => $filterNganh,
+            'loai' => $filterLoai,
+            'nganh' => $filterNganh,
             'search' => $filterSearch,
         ];
 
-        $total      = $doanhNghiepModel->getFilteredCount($filters);
+        $total = $doanhNghiepModel->getFilteredCount($filters);
         $totalPages = (int) ceil($total / $perPage);
-        $offset     = ($page - 1) * $perPage;
-        $rows       = $doanhNghiepModel->getFilteredList($filters, $perPage, $offset);
+        $offset = ($page - 1) * $perPage;
+        $rows = $doanhNghiepModel->getFilteredList($filters, $perPage, $offset);
 
         $qs = function (array $override = []) use ($filterTinh, $filterPhuong, $filterLoai, $filterNganh, $filterSearch): string {
             $base = array_filter([
-                'tinh'   => $filterTinh,
+                'tinh' => $filterTinh,
                 'phuong' => $filterPhuong,
-                'loai'   => $filterLoai,
-                'nganh'  => $filterNganh,
+                'loai' => $filterLoai,
+                'nganh' => $filterNganh,
                 'search' => $filterSearch,
-                'page'   => 1
+                'page' => 1
             ]);
             return '?' . http_build_query(array_merge($base, $override));
         };
@@ -313,10 +312,10 @@ class AdminController
         require_once __DIR__ . '/../models/NganhNgheModel.php';
         require_once __DIR__ . '/../models/DoanhNghiepModel.php';
 
-        $tinhModel       = new TinhThanhModel();
-        $phuongModel     = new PhuongXaModel();
-        $loaiModel       = new LoaiHinhModel();
-        $nganhModel      = new NganhNgheModel();
+        $tinhModel = new TinhThanhModel();
+        $phuongModel = new PhuongXaModel();
+        $loaiModel = new LoaiHinhModel();
+        $nganhModel = new NganhNgheModel();
         $doanhNghiepModel = new DoanhNghiepModel();
 
         $msg = '';
@@ -332,24 +331,24 @@ class AdminController
             if ($action === 'save') {
                 $isEdit = !empty($_POST['is_edit']);
                 $mstPost = trim($_POST['mst'] ?? '');
-                
+
                 $data = [
-                    'mst'            => $mstPost,
-                    'ten_cong_ty'    => trim($_POST['ten_cong_ty'] ?? ''),
-                    'ten_quoc_te'    => trim($_POST['ten_quoc_te'] ?? ''),
-                    'ten_viet_tat'   => trim($_POST['ten_viet_tat'] ?? ''),
+                    'mst' => $mstPost,
+                    'ten_cong_ty' => trim($_POST['ten_cong_ty'] ?? ''),
+                    'ten_quoc_te' => trim($_POST['ten_quoc_te'] ?? ''),
+                    'ten_viet_tat' => trim($_POST['ten_viet_tat'] ?? ''),
                     'nguoi_dai_dien' => trim($_POST['nguoi_dai_dien'] ?? ''),
-                    'dia_chi'        => trim($_POST['dia_chi'] ?? ''),
-                    'dia_chi_thue'   => trim($_POST['dia_chi_thue'] ?? ''),
-                    'dien_thoai'     => trim($_POST['dien_thoai'] ?? ''),
-                    'tinh_trang'     => trim($_POST['tinh_trang'] ?? ''),
+                    'dia_chi' => trim($_POST['dia_chi'] ?? ''),
+                    'dia_chi_thue' => trim($_POST['dia_chi_thue'] ?? ''),
+                    'dien_thoai' => trim($_POST['dien_thoai'] ?? ''),
+                    'tinh_trang' => trim($_POST['tinh_trang'] ?? ''),
                     'ngay_hoat_dong' => trim($_POST['ngay_hoat_dong'] ?? '') ?: null,
-                    'quan_ly_boi'    => trim($_POST['quan_ly_boi'] ?? ''),
-                    'tinh_thanh_id'  => (int)($_POST['tinh_thanh_id'] ?? 0) ?: null,
-                    'phuong_xa_id'   => (int)($_POST['phuong_xa_id'] ?? 0) ?: null,
-                    'loai_hinh_id'   => (int)($_POST['loai_hinh_id'] ?? 0) ?: null,
-                    'nganh_nghe_id'  => (int)($_POST['nganh_nghe_id'] ?? 0) ?: null,
-                    'url_nguon'      => trim($_POST['url_nguon'] ?? '')
+                    'quan_ly_boi' => trim($_POST['quan_ly_boi'] ?? ''),
+                    'tinh_thanh_id' => (int) ($_POST['tinh_thanh_id'] ?? 0) ?: null,
+                    'phuong_xa_id' => (int) ($_POST['phuong_xa_id'] ?? 0) ?: null,
+                    'loai_hinh_id' => (int) ($_POST['loai_hinh_id'] ?? 0) ?: null,
+                    'nganh_nghe_id' => (int) ($_POST['nganh_nghe_id'] ?? 0) ?: null,
+                    'url_nguon' => trim($_POST['url_nguon'] ?? '')
                 ];
 
                 if ($data['mst'] === '' || $data['ten_cong_ty'] === '') {
@@ -375,9 +374,9 @@ class AdminController
             }
         }
 
-        $tinhList      = $tinhModel->getAll();
-        $loaiList      = $loaiModel->getAll();
-        $nganhList     = $nganhModel->getAll();
+        $tinhList = $tinhModel->getAll();
+        $loaiList = $loaiModel->getAll();
+        $nganhList = $nganhModel->getAll();
         $allPhuongList = $phuongModel->getAll();
 
         require_once __DIR__ . '/../views/admin_doanh_nghiep_edit.php';
