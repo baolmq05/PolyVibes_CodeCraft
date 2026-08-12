@@ -127,4 +127,16 @@ while (true) {
 }
 
 output("<span style='color: #28a745; font-weight: bold;'>✔ Hoàn tất. Đã thêm: {$inserted} | Bỏ qua: {$skipped}</span>", true);
-output("<script>alert('Hoàn tất cào danh sách doanh nghiệp! Đã thêm {$inserted} URL mới.');</script>", true);
+output("<script>
+  if (window.parent && window.parent.Swal) {
+      window.parent.Swal.fire({
+          title: 'Cào danh sách hoàn tất!',
+          text: 'Đã thêm thành công ' + <?= $inserted ?> + ' URL mới vào hàng đợi cào.',
+          icon: 'success',
+          confirmButtonText: 'Tuyệt vời',
+          confirmButtonColor: '#3525cd'
+      });
+  } else {
+      alert('Hoàn tất cào danh sách doanh nghiệp! Đã thêm ' + <?= $inserted ?> + ' URL mới.');
+  }
+</script>", true);

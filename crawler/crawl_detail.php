@@ -172,7 +172,19 @@ foreach ($rows as $idx => $row) {
 }
 
 output("<span style='color: #28a745; font-weight: bold;'>✔ Hoàn tất crawl_detail. Đã cập nhật xong {$totalRows} doanh nghiệp.</span>", true);
-output("<script>alert('Hoàn tất cào chi tiết doanh nghiệp! Đã xử lý xong {$totalRows} URL trong hàng đợi.');</script>", true);
+output("<script>
+  if (window.parent && window.parent.Swal) {
+      window.parent.Swal.fire({
+          title: 'Cào chi tiết hoàn tất!',
+          text: 'Đã xử lý xong ' + <?= $totalRows ?> + ' doanh nghiệp từ hàng đợi.',
+          icon: 'success',
+          confirmButtonText: 'Đồng ý',
+          confirmButtonColor: '#3525cd'
+      });
+  } else {
+      alert('Hoàn tất cào chi tiết doanh nghiệp! Đã xử lý xong ' + <?= $totalRows ?> + ' URL trong hàng đợi.');
+  }
+</script>", true);
 
 // ──────────────────────────────────────────────────────────────
 // Hàm parse trang chi tiết
