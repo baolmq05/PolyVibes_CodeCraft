@@ -127,6 +127,11 @@ foreach ($rows as $idx => $row) {
     ";
 
     try {
+        // Kiểm tra xem MST đã tồn tại trong doanh_nghiep chưa
+        $checkMst = $pdo->prepare("SELECT COUNT(*) FROM doanh_nghiep WHERE mst = ?");
+        $checkMst->execute([$data['mst']]);
+        $exists = ((int)$checkMst->fetchColumn() > 0);
+
         $pdo->prepare($sql)->execute([
             $data['mst'],
             $data['ten_cong_ty'],
@@ -146,11 +151,15 @@ foreach ($rows as $idx => $row) {
             $url,
         ]);
 
-        logCrawl($pdo, $url, 'thanh_cong', 'MST: ' . $data['mst']);
+        logCrawl($pdo, $url, 'thanh_cong', 'MST: ' . $data['mst'] . ($exists ? ' (Đã tồn tại - cập nhật)' : ' (Thêm mới)'));
         $pdo->prepare("UPDATE crawl_queue SET trang_thai='thanh_cong', ngay_cap_nhat=NOW() WHERE id=?")
             ->execute([$queueId]);
 
-        output("    ✔ [{$currentNum}/{$totalRows}] {$data['ten_cong_ty']} [{$data['mst']}]");
+        if ($exists) {
+            output("    ~ [{$currentNum}/{$totalRows}] Đã có trong cơ sở dữ liệu (Cập nhật mới): {$data['ten_cong_ty']} [{$data['mst']}]");
+        } else {
+            output("    ✔ [{$currentNum}/{$totalRows}] Thêm mới doanh nghiệp thành công: {$data['ten_cong_ty']} [{$data['mst']}]");
+        }
     } catch (PDOException $e) {
         $msg = 'DB: ' . $e->getMessage();
         output("    ✗ [{$currentNum}/{$totalRows}] {$msg}");
