@@ -131,12 +131,12 @@ output("<script>
   if (window.parent && window.parent.Swal) {
       window.parent.Swal.fire({
           title: 'Cào danh sách hoàn tất!',
-          text: 'Đã thêm thành công ' + <?= $inserted ?> + ' URL mới vào hàng đợi cào.',
+          text: 'Đã thêm thành công " . $inserted . " URL mới vào hàng đợi cào.',
           icon: 'success',
           confirmButtonText: 'Tuyệt vời',
           confirmButtonColor: '#3525cd'
       });
   } else {
-      alert('Hoàn tất cào danh sách doanh nghiệp! Đã thêm ' + <?= $inserted ?> + ' URL mới.');
+      alert('Hoàn tất cào danh sách doanh nghiệp! Đã thêm " . $inserted . " URL mới.');
   }
 </script>", true);

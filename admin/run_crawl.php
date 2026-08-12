@@ -43,6 +43,11 @@ if ($action === 'list') {
 </style>
 </head>
 <body>
+<script>
+  if (window.parent && window.parent.hideTerminalLoader) {
+      window.parent.hideTerminalLoader();
+  }
+</script>
 <?php
 ob_implicit_flush(true);
 if (ob_get_level() > 0) ob_end_flush();

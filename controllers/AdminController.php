@@ -33,7 +33,7 @@ class AdminController
             'soc-trang-949' => 'Sóc Trăng',
             'bac-lieu-197' => 'Bạc Liêu',
             'ca-mau-108' => 'Cà Mau',
-            'ho-chi-minh' => 'TP. Hồ Chí Minh',
+            'ho-chi-minh-23' => 'TP. Hồ Chí Minh',
         ];
 
         require_once __DIR__ . '/../views/admin_crawl.php';

@@ -81,7 +81,7 @@ require_once __DIR__ . '/admin_layout_header.php';
         <h3 class="font-headline-sm text-headline-sm text-on-surface mb-md">Trung tâm điều khiển</h3>
         
         <!-- Form Crawl List -->
-        <form method="GET" action="run_crawl.php" target="logframe" class="space-y-4">
+        <form method="GET" action="run_crawl.php" target="logframe" class="space-y-4" onsubmit="showTerminalLoader()">
           <input type="hidden" name="action" value="list">
           <div>
             <label class="block font-label-md text-label-md text-on-surface-variant mb-xs">Nguồn dữ liệu (Tỉnh/Thành)</label>
@@ -104,7 +104,7 @@ require_once __DIR__ . '/admin_layout_header.php';
         <div class="border-t border-outline-variant/30 my-4"></div>
 
         <!-- Form Crawl Detail -->
-        <form method="GET" action="run_crawl.php" target="logframe" class="space-y-4">
+        <form method="GET" action="run_crawl.php" target="logframe" class="space-y-4" onsubmit="showTerminalLoader()">
           <input type="hidden" name="action" value="detail">
           <div>
             <label class="block font-label-md text-label-md text-on-surface-variant mb-xs">Số bản ghi quét chi tiết / lần</label>
@@ -122,7 +122,7 @@ require_once __DIR__ . '/admin_layout_header.php';
   <!-- Right Column: Terminal & Queue Monitor -->
   <div class="lg:col-span-2 flex flex-col gap-lg">
     <!-- Terminal Panel -->
-    <div class="bg-[#0F172A] border border-outline/20 rounded-xl shadow-[0_4px_6px_-1px_rgb(0,0,0,0.05)] overflow-hidden flex flex-col h-[300px]">
+    <div class="bg-[#0F172A] border border-outline/20 rounded-xl shadow-[0_4px_6px_-1px_rgb(0,0,0,0.05)] overflow-hidden flex flex-col h-[300px] relative">
       <div class="flex items-center justify-between px-md py-2 bg-[#1E293B] border-b border-outline/10">
         <div class="flex items-center gap-2">
           <span class="material-symbols-outlined text-tertiary-fixed-dim" style="font-size: 16px;">terminal</span>
@@ -132,6 +132,11 @@ require_once __DIR__ . '/admin_layout_header.php';
                 onclick="document.querySelector('iframe[name=logframe]').src='about:blank'">
           Xoá log
         </button>
+      </div>
+      <!-- Loader Overlay -->
+      <div id="terminal-loader" class="absolute inset-0 top-[37px] bg-[#0F172A]/90 flex flex-col items-center justify-center gap-3 z-10 hidden">
+        <span class="material-symbols-outlined text-tertiary-fixed-dim animate-spin" style="font-size: 32px;">sync</span>
+        <span class="font-mono text-xs text-[#94A3B8] animate-pulse">Đang kết nối và khởi chạy worker...</span>
       </div>
       <div class="flex-grow bg-[#0F172A]">
         <iframe name="logframe" src="about:blank"
@@ -225,6 +230,15 @@ require_once __DIR__ . '/admin_layout_header.php';
     </div>
   </div>
 </div>
+
+<script>
+  function showTerminalLoader() {
+      document.getElementById('terminal-loader').classList.remove('hidden');
+  }
+  function hideTerminalLoader() {
+      document.getElementById('terminal-loader').classList.add('hidden');
+  }
+</script>
 
 <?php
 require_once __DIR__ . '/admin_layout_footer.php';
