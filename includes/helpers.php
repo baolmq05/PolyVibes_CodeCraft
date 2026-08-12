@@ -147,8 +147,8 @@ function fetchHtml(string $url, int $timeout = 15): string
             'Accept-Language: vi-VN,vi;q=0.9,en-US;q=0.8,en;q=0.7',
             'Cache-Control: no-cache',
         ],
-        CURLOPT_SSL_VERIFYPEER => true,
-        CURLOPT_SSL_VERIFYHOST => 2,
+        CURLOPT_SSL_VERIFYPEER => false,
+        CURLOPT_SSL_VERIFYHOST => 0,
     ]);
 
     $body     = curl_exec($ch);
