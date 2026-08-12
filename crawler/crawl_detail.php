@@ -81,7 +81,8 @@ foreach ($rows as $idx => $row) {
     $dom->clear();
 
     if (empty($data['mst'])) {
-        $msg = 'Không tìm thấy MST trong trang';
+        $titleText = $data['page_title'] ?? 'Không rõ';
+        $msg = "Không tìm thấy MST trong trang (Tiêu đề trang: \"" . $titleText . "\")";
         output("    ✗ {$msg}");
         logCrawl($pdo, $url, 'that_bai', $msg);
         $pdo->prepare("UPDATE crawl_queue SET trang_thai='that_bai', ngay_cap_nhat=NOW() WHERE id=?")
@@ -211,7 +212,14 @@ function parseDetailPage(simple_html_dom $dom, string $url): array
         'nganh_nghe'     => '',
         'ten_tinh'       => '',
         'ten_phuong'     => '',
+        'page_title'     => '',
     ];
+
+    // Tiêu đề trang
+    $titleEl = $dom->find('title', 0);
+    if ($titleEl) {
+        $data['page_title'] = trim($titleEl->plaintext);
+    }
 
     // Tên công ty từ H1
     $h1 = $dom->find('h1', 0);
