@@ -156,26 +156,28 @@ require_once __DIR__ . '/admin_layout_header.php';
           <?php if (empty($queueItems)): ?>
             <div class="text-center text-xs text-slate-400 py-6">Hàng đợi hiện tại đang trống.</div>
           <?php else: foreach ($queueItems as $qi): ?>
-            <div class="flex items-center justify-between p-sm border border-outline-variant/40 rounded-lg hover:bg-surface-container-low transition-colors">
-              <div class="flex items-center gap-sm">
-                <span class="material-symbols-outlined text-outline-variant" style="font-size: 18px;">link</span>
-                <span class="font-mono text-xs text-on-surface-variant truncate max-w-[200px] md:max-w-[400px]" title="<?= e($qi['url']) ?>">
+            <div class="flex items-center justify-between p-sm border border-outline-variant/40 rounded-lg hover:bg-surface-container-low transition-colors gap-3">
+              <div class="flex items-center gap-sm min-w-0 flex-1">
+                <span class="material-symbols-outlined text-outline-variant flex-shrink-0" style="font-size: 18px;">link</span>
+                <span class="font-mono text-xs text-on-surface-variant truncate block w-full" title="<?= e($qi['url']) ?>">
                   <?= e($qi['url']) ?>
                 </span>
               </div>
-              <?php
-              $status = $qi['trang_thai'];
-              if ($status === 'thanh_cong'): ?>
-                <span class="px-2.5 py-0.5 bg-emerald-50 text-emerald-700 font-semibold text-[10px] rounded-full border border-emerald-200">Thành công</span>
-              <?php elseif ($status === 'dang_xu_ly'): ?>
-                <span class="px-2.5 py-0.5 bg-[#fef3c7] text-[#92400e] font-semibold text-[10px] rounded-full border border-amber-200 flex items-center gap-1">
-                  <span class="material-symbols-outlined animate-spin" style="font-size: 10px;">sync</span> Đang xử lý
-                </span>
-              <?php elseif ($status === 'cho'): ?>
-                <span class="px-2.5 py-0.5 bg-slate-100 text-slate-600 font-semibold text-[10px] rounded-full border border-slate-200">Chờ</span>
-              <?php else: ?>
-                <span class="px-2.5 py-0.5 bg-red-50 text-red-700 font-semibold text-[10px] rounded-full border border-red-200">Thất bại</span>
-              <?php endif; ?>
+              <div class="flex-shrink-0">
+                <?php
+                $status = $qi['trang_thai'];
+                if ($status === 'thanh_cong'): ?>
+                  <span class="px-2.5 py-0.5 bg-emerald-50 text-emerald-700 font-semibold text-[10px] rounded-full border border-emerald-200">Thành công</span>
+                <?php elseif ($status === 'dang_xu_ly'): ?>
+                  <span class="px-2.5 py-0.5 bg-[#fef3c7] text-[#92400e] font-semibold text-[10px] rounded-full border border-amber-200 flex items-center gap-1">
+                    <span class="material-symbols-outlined animate-spin" style="font-size: 10px;">sync</span> Đang xử lý
+                  </span>
+                <?php elseif ($status === 'cho'): ?>
+                  <span class="px-2.5 py-0.5 bg-slate-100 text-slate-600 font-semibold text-[10px] rounded-full border border-slate-200">Chờ</span>
+                <?php else: ?>
+                  <span class="px-2.5 py-0.5 bg-red-50 text-red-700 font-semibold text-[10px] rounded-full border border-red-200">Thất bại</span>
+                <?php endif; ?>
+              </div>
             </div>
           <?php endforeach; endif; ?>
         </div>
